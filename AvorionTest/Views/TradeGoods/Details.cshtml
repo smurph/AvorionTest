@@ -1,0 +1,162 @@
+﻿@model AvorionTest.Models.Database.TradeGood
+@using AvorionTest.Models.Database
+@using System.Linq
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>TradeGood</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Volume)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Volume)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsIllegal)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsIllegal)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsDangerous)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsDangerous)
+        </dd>
+
+    </dl>
+</div>
+<div style="border:1px solid black">
+    <h4>Buy</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Station
+                </th>
+                <th>
+                    Price
+                </th>
+                <th>
+                    %
+                </th>
+                <th>
+                    Stock/Max
+                </th>
+                <th>
+                    Volume
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (TradeRecord buyable in ViewBag.Buyable)
+            {
+                <tr>
+                    <td>
+                        @{
+                            var Station = ((List<Station>)ViewBag.Stations).FirstOrDefault(s => s.Id == buyable.Station_Id);
+                            var TradeGood = ((List<TradeGood>)ViewBag.TradeGoods).FirstOrDefault(tg => tg.Id == buyable.TradeGood_Id);
+                        }
+                        @Station.Name (@Station.X : @Station.Y)
+                    </td>
+                    <td>
+                        @buyable.Price
+                    </td>
+                    <td>
+                        @( Math.Round((((float)TradeGood.Price / (float)buyable.Price) - 1)*100, 2))
+                    </td>
+                    <td>
+                        @buyable.stock / @buyable.MaxStock
+                    </td>
+                    <td>
+                        @TradeGood.Volume
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div style="border:1px solid black">
+    <h4>Sell</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Station
+                </th>
+                <th>
+                    Price
+                </th>
+                <th>
+                    %
+                </th>
+                <th>
+                    Stock/Max
+                </th>
+                <th>
+                    Volume
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (TradeRecord buyable in ViewBag.Buyable)
+            {
+                <tr>
+                    <td>
+                        @{
+                            var Station = ((List<Station>)ViewBag.Stations).FirstOrDefault(s => s.Id == buyable.Station_Id);
+                            var TradeGood = ((List<TradeGood>)ViewBag.TradeGoods).FirstOrDefault(tg => tg.Id == buyable.TradeGood_Id);
+                        }
+                        @Station.Name (@Station.X : @Station.Y)
+                    </td>
+                    <td>
+                        @buyable.Price
+                    </td>
+                    <td>
+                        @( Math.Round((((float)TradeGood.Price / (float)buyable.Price) - 1) * 100, 2))
+                    </td>
+                    <td>
+                        @buyable.stock / @buyable.MaxStock
+                    </td>
+                    <td>
+                        @TradeGood.Volume
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
